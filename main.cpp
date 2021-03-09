@@ -13,11 +13,8 @@ bool callback(const PDU &pdu) {
     string dport = to_string(tcp.dport());
 
     if (dport == "80" || dport == "443") {
-        cout << "web request" << endl;
+        cout << ip.src_addr() << ':' << tcp.sport() << " -> " << ip.dst_addr() << ':' << tcp.dport() << endl;
     }
-    
-    cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
-        << ip.dst_addr() << ':' << tcp.dport() << endl;
 
     return true;
 }
