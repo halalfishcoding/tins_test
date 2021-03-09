@@ -9,8 +9,10 @@ bool callback(const PDU &pdu) {
     const IP &ip = pdu.rfind_pdu<IP>(); 
     // Find the TCP layer
     const TCP &tcp = pdu.rfind_pdu<TCP>(); 
-    cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
+    if (tcp.sport() == 4000){
+        cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
          << ip.dst_addr() << ':' << tcp.dport() << endl;
+        }
     return true;
 }
 
