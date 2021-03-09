@@ -12,7 +12,7 @@ bool callback(const PDU &pdu) {
     
     string dport = to_string(tcp.dport());
 
-    if (dport == "443") {
+    if (dport == "80" || dport == "443") {
         cout << "web request" << endl;
     }
     
