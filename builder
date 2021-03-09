@@ -4,12 +4,12 @@ $FILE main.cpp
 
 if [$1 == build] 
 then
-    $COMPILER $FILE $OPTS
+    g++ main.cpp -o main -ltins
 fi
 
 if [$1 == run]
 then
-    $COMPILER $FILE $OPTS
+    g++ main.cpp -o main -ltins
     ./main
 fi
 
