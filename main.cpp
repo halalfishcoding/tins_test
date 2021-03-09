@@ -1,4 +1,5 @@
 #include <iostream>
+#include <typeinfo>
 #include <tins/tins.h>
 
 using namespace Tins;
@@ -9,10 +10,12 @@ bool callback(const PDU &pdu) {
     const IP &ip = pdu.rfind_pdu<IP>(); 
     // Find the TCP layer
     const TCP &tcp = pdu.rfind_pdu<TCP>(); 
-    if (tcp.sport() == 4000){
-        cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
-         << ip.dst_addr() << ':' << tcp.dport() << endl;
-        }
+    
+
+    std::cout << typeid(tcp.sport()).name() << '\n';
+    cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
+        << ip.dst_addr() << ':' << tcp.dport() << endl;
+
     return true;
 }
 
