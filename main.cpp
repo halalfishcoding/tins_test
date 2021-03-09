@@ -1,5 +1,4 @@
 #include <iostream>
-#include <typeinfo>
 #include <tins/tins.h>
 
 using namespace Tins;
@@ -11,8 +10,12 @@ bool callback(const PDU &pdu) {
     // Find the TCP layer
     const TCP &tcp = pdu.rfind_pdu<TCP>(); 
     
+    string dport = to_string(tcp.dport());
 
-    std::cout << typeid(tcp.sport()).name() << '\n';
+    if (dport == "443") {
+        cout << "web request" << endl;
+    }
+    
     cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
         << ip.dst_addr() << ':' << tcp.dport() << endl;
 
