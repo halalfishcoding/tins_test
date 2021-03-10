@@ -1,25 +1,22 @@
 #include <iostream>
-#include <vector>
 #include <tins/tins.h>
 
 using namespace Tins;
+using namespace std;
+
+bool callback(const PDU &pdu) {
+    // Find the IP layer
+    const IP &ip = pdu.rfind_pdu<IP>(); 
+    
+    // Find the TCP layer
+    const TCP &tcp = pdu.rfind_pdu<TCP>(); 
+    cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
+         << ip.dst_addr() << ':' << tcp.dport() << endl;
+    return true;
+}
 
 int main() {
-    std::vector<Packet> vt;
-    
-    Sniffer sniffer("eth0");
-    while (vt.size() != 10) {
-        // next_packet returns a PtrPacket, which can be implicitly converted to Packet.
-        vt.push_back(sniffer.next_packet());
-    }
-    // Done, now let's check the packets
-    for (const auto& packet : vt) {
-        // Is there an IP PDU somewhere?
-        if (packet.pdu()->find_pdu<IP>()) {
-            // Just print timestamp's seconds and IP source address
-            std::cout << "At: " << packet.timestamp().seconds()
-                    << " - " << packet.pdu()->rfind_pdu<IP>().src_addr() 
-                    << std::endl;
-        }
-    }
+    Sniffer sniffer("eth0")
+    sniffer.set_filter("p 80")
+    sniffer.sniff_loop(callback);
 }
