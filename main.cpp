@@ -1,22 +1,30 @@
-#include <iostream>
 #include <tins/tins.h>
 
 using namespace Tins;
-using namespace std;
 
-bool callback(const PDU &pdu) {
-    // Find the IP layer
-    const IP &ip = pdu.rfind_pdu<IP>(); 
-
-    // Find the TCP layer
-    const TCP &tcp = pdu.rfind_pdu<TCP>(); 
-    cout << ip.src_addr() << ':' << tcp.sport() << " -> " 
-         << ip.dst_addr() << ':' << tcp.dport() << endl;
-    return true;
+bool doo(PDU&) {
+    return false;
 }
 
+struct foo {
+    void bar() {
+        SnifferConfiguration config;
+        config.set_promisc_mode(true);
+        config.set_filter("ip src 35.202.112.104");
+        Sniffer sniffer("eth0", config);
+        
+        sniffer.sniff_loop(make_sniffer_handler(this, &foo::handle));
+        // Also valid
+        sniffer.sniff_loop(doo);
+    }
+    
+    bool handle(PDU&) {
+        // Don't process anything
+        return false;
+    }
+};
+
 int main() {
-    Sniffer sniffer("eth0");
-    sniffer.set_filter("p 80");
-    sniffer.sniff_loop(callback);
+    foo f;
+    f.bar();
 }
