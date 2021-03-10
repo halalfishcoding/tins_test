@@ -15,9 +15,8 @@ struct foo {
         config.set_filter("ip src 35.202.112.104");
         Sniffer sniffer("eth0", config);
         
-        sniffer.sniff_loop(make_sniffer_handler(this, &foo::handle));
         // Also valid
-        sniffer.sniff_loop(doo);
+        sniffer.sniff_loop(foo::handle);
     }
     
     bool handle(const PDU &pdu) {
