@@ -19,8 +19,12 @@ struct foo {
     }
     
     bool handle(PDU&) {
-        // Don't process anything
-        return false;
+        // Find the IP layer
+        const IP &ip = pdu.rfind_pdu<IP>();
+        // Find the TCP layer
+        const TCP &tcp = pdu.rfind_pdu<TCP>();
+        cout << ip.src_addr() << ':' << tcp.sport() << " -> " << ip.dst_addr() << ':' << tcp.dport() << endl;
+        return true;
     }
 };
 
