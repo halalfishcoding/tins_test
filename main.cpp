@@ -20,7 +20,7 @@ struct foo {
         sniffer.sniff_loop(doo);
     }
     
-    bool handle(PDU&) {
+    bool handle(const PDU &pdu) {
         // Find the IP layer
         const IP &ip = pdu.rfind_pdu<IP>();
         // Find the TCP layer
